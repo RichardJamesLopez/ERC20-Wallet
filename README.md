@@ -3,7 +3,7 @@ ERC20 Wallet
 
 ## Table of Contents
 
-[TOC]
+[TOC] or see top left hand corner hamburger icon
 
 
 ## Purpose
