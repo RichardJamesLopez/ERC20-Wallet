@@ -22,7 +22,7 @@ describe("ContractLogic testing...", () => {
     signer1 = ethers.provider.getSigner(1);
   });
   it("deployment should have the correct address stored as the implementation", async() => {
-    assert.equal(await proxy.getImplementation(), LOGIC_ADDRESS);
+    assert.equal(await proxy.owner(), LOGIC_ADDRESS);
   });
   it('deployment should allow the address to be viewable', async() => {
     assert.equal(await proxy.owner(), deployerAddr);
