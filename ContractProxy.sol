@@ -8,74 +8,28 @@ pragma solidity ^0.7.0;
  */
 contract ContractProxy {
     address public delegateCallContract;
-    address private _delegateCallContract;
-
-    /**
-    * @dev useful event should the optional transfer of ownership be commented back in
-    */
-    //event OwnershipTransferred(address indexed previousOwner, address indexed newOwner);
+    address public owner;
+    address public _delegateCallContract;
 
     /**
     * @dev only one argument to set the address of the delegateCallContract (this Proxy Wallet); commented out other checks and mapping to testnet address that proved to be superfluous
     */
     constructor(address _implementationAddr) {
         delegateCallContract = _implementationAddr;
-        //address msgSender = _msgSender();
-        //delegateCallContract = msgSender;
-        //emit OwnershipTransferred(address(0), msgSender);
+        owner = msg.sender;
       }
-
-      /**
-     * @dev Throws if called by any account other than the owner.
-     */
-    modifier onlyOwner() {
-        require(owner() == msg.sender, "Ownable: caller is not the owner");
-        _;
-    }
-
-
-    /**
-    * @dev Returns the address of the current owner. Checked by the modifier onlyOwner .
-    */
-
-    function owner() public view returns (address) {
-         return delegateCallContract;
-    }
-
 
 
     /**
     * @dev Manually sets the address to a potentially different owner.
     * @notice - this is new functionality to test
     */
-    function setDelegateCallContract() public returns (address){
-        return _delegateCallContract;
+    function setDelegateCallContract(address _newLogic) public {
+       _delegateCallContract = _newLogic;
     }
 
-    function transferDelegateCallContract() private returns (address){
-        delegateCallContract = _delegateCallContract;
-    }
-
-
-
-    /**
-    * @dev leaving optionality to transfer through bytecode.
-    * @notice commented out as it is superfluous to other transfer functions in this and ContractLogic.sol contract
-    */
-    /*
-    function delegateTransfer(address token, uint256 amount, address recipient)
-        public {
-        string memory sig = "deposit(address,uint256,address)";
-        address(delegateCallContract).delegatecall(
-            abi.encodeWithSignature(sig, token, amount, recipient)
-        );
-    }
-    */
-    function getImplementation() external view virtual returns (address) {
-      return delegateCallContract;
-    }
-
-    function _implementation() internal view  returns (address) {return delegateCallContract;
+    function setOwner(address _newOwner) public {
+        owner = _newOwner;
     }
 
     /**
@@ -95,11 +49,11 @@ contract ContractProxy {
             }
         }
 
-      /**
-      @notice function is paired with a fallback function that is NOT payable
-      */
+    /**
+    @notice function is paired with a fallback function that is NOT payable
+    */
 
-    receive() external payable {
+    receive() external payable{
       }
 
       /**
